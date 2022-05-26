@@ -5,69 +5,56 @@
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.0-4baaaa.svg)](CODE_OF_CONDUCT.md)
 [![Maintainer](https://img.shields.io/badge/Maintainer-Wayfair-7F187F)](https://wayfair.github.io)
 
-## Before You Start
-
-As much as possible, we have tried to provide enough tooling to get you up and running quickly and with a minimum of effort. This includes sane defaults for documentation; templates for bug reports, feature requests, and pull requests; and [GitHub Actions](https://github.com/features/actions) that will automatically manage stale issues and pull requests. This latter defaults to labeling issues and pull requests as stale after 60 days of inactivity, and closing them after 7 additional days of inactivity. These [defaults](.github/workflows/stale.yml) and more can be configured. For configuration options, please consult the documentation for the [stale action](https://github.com/actions/stale).
-
-In trying to keep this template as generic and reusable as possible, there are some things that were omitted out of necessity and others that need a little tweaking. Before you begin developing in earnest, there are a few changes that need to be made.
-
-- [ ] Select an appropriate license for your project. This can easily be achieved through the 'Add File' button on the GitHub UI, naming the file `LICENSE`, and selecting your desired license from the provided list.
-- [ ] Update the `<License name>` placeholder in this file to reflect the name of the license you selected above
-- [ ] Replace `[INSERT CONTACT METHOD]` in [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) with a suitable communication channel
-- [ ] Change references to `org_name` to the name of the org your repo belongs to (eg. `wayfair-incubator`)
-  - [ ] In [`README.md`](README.md)
-  - [ ] In [`CONTRIBUTING.md`](CONTRIBUTING.md)
-- [ ] Change references to `repo_name` to the name of your new repo
-  - [ ] In [`README.md`](README.md)
-  - [ ] In [`CONTRIBUTING.md`](CONTRIBUTING.md)
-- [ ] Update the link to the contribution guidelines to point to your project
-  - [ ] In [`.github/ISSUE_TEMPLATE/BUG_REPORT.md`](.github/ISSUE_TEMPLATE/BUG_REPORT.md)
-  - [ ] In [`.github/PULL_REQUEST_TEMPLATE.md`](.github/PULL_REQUEST_TEMPLATE.md)
-- [ ] Replace the `<project name>` placeholder with the name of your project
-  - [ ] In [`CONTRIBUTING.md`](CONTRIBUTING.md)
-  - [ ] In [`SECURITY.md`](SECURITY.md)
-- [ ] Add names and contact information for actual project maintainers to [`MAINTAINERS.md`](MAINTAINERS.md)
-- [ ] Delete the content of [`CHANGELOG.md`](CHANGELOG.md). We encourage you to [keep a changelog](https://keepachangelog.com/en/1.0.0/).
-- [ ] Replace the generic content in this file with the relevant details about your project
-- [ ] Delete this section of the README
-
 ## About The Project
 
-Provide some information about what the project is/does.
+The mainline purpose of this project is to build the PHP extension pdo_sqlrelay for
+various PHP versions and various operating systems, and to perform continuous integration
+and testing, utilizing the available containers already built and maintained by
+other teams, and the [SQLRelay maintainers'](https://www.firstworks.com) prebuild binaries.
+
+We do not intend on maintaining a fork of the pdo_sqlrelay.cpp source file, but only to mirror
+a suitable release or patch from the upstream maintainer, and to support an
+orchestration, using github actions, that ensure the usability of this extension in the
+latest versions of PHP and operating system releases, database releases, etc as prudent
+software lifecycle management practices indicate.
+
+This project may not ever have releases or provide anything other than artifacts
+of testing.
 
 ## Getting Started
 
-To get a local copy up and running follow these simple steps.
+In a suitable PHP development environment, with prequisite software installed,
+the pdo_sqlrelay.so can be built by:
+
+```sh
+phpize --clean; phpize; ./configure; make clean; make;
+```
+
+The make test will fail until the generated Makefile is edited to include the
+loading of the extension=pdo.so or until we figure out what to change in
+the config.m4 to get this to happen automatically. The github actions
+will have calls to sed to do this editing.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
+These all refer to prebuild binaries, e.g. RPM, APT, from customary sources.
 
-- npm
-
-  ```sh
-  npm install npm@latest -g
-  ```
+1. php-devel possibly from https://blog.remirepo.net/ or provided by your OS distro.
+2. rudiments-devel from https://www.firstworks.com/opensource.html
+3. sqlrelay-c++-devel as above.
+4. php-debuginfo (strongly suggested)
+5. sqlrelay-debuginfo (strongly suggested)
+6. gcc-c++, valgrind, gdb, strace, ltrace, binutils (obviously).
 
 ### Installation
 
-1. Clone the repo
-
-   ```sh
-   git clone https://github.com/org_name/repo_name.git
-   ```
-
-2. Install NPM packages
-
-   ```sh
-   npm install
-   ```
+```sh
+phpize --clean; phpize; ./configure; make clean; make;
+```
 
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com) or the [Wiki](https://github.com/org_name/repo_name/wiki)_
+See https://www.firstworks.com/opensource.html
 
 ## Roadmap
 
@@ -79,13 +66,12 @@ Contributions are what make the open source community such an amazing place to l
 
 ## License
 
-Distributed under the `<License name>` License. See `LICENSE` for more information.
+Wayfair provided files distributed under the `BSD 2-Clause "Simplified"` License.
+See `LICENSE` for more information. other files as indicated by the upstream sources.
 
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email
-
-Project Link: [https://github.com/org_name/repo_name](https://github.com/org_name/repo_name)
+Project Link: [https://github.com/wayfair-incubator/pdo_sqlrelay_builder](https://github.com/wayfair-incubator/pdo_sqlrelay_builder)
 
 ## Acknowledgements
 
