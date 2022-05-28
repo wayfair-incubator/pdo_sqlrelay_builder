@@ -24,29 +24,13 @@ jobs:
         run: |
           lsb_release -a
           sudo apt-get update
-          mkdir -p tmp
-          curl --silent --show-error \
-          --write-out "\n%{http_code} %{content_type} %{time_total} %{size_download} %{size_upload} %{url_effective}\n" \
-          --compressed \
-          --dump-header "tmp/sqlrelay-binary-distribution-1.9.2.hdr.txt" \
-          --output "tmp/sqlrelay-binary-distribution-1.9.2.tar.gz" \
-          --get \
-          --location \
-          --url "https://downloads.sourceforge.net/project/sqlrelay/sqlrelay/1.9.2/sqlrelay-binary-distribution-1.9.2.tar.gz" \
-          --form-string "r=https://sqlrelay.sourceforge.net/download2.html" \
-          --form-string ts=$(date +%s) \
-          --form-string use_mirror=superb-dca2
-          gzip -t -v tmp/sqlrelay-binary-distribution-1.9.2.tar.gz
-          tar --file=tmp/sqlrelay-binary-distribution-1.9.2.tar.gz \
-              --directory=tmp \
-              --extract --gzip
-          sudo dpkg -i tmp/sqlrelay-binary-distribution-1.9.2/ubuntu2004x64/rudiments_1.4.2-1_amd64.deb
-          sudo dpkg -i tmp/sqlrelay-binary-distribution-1.9.2/ubuntu2004x64/rudiments-dev_1.4.2-1_amd64.deb
-          sudo dpkg -i tmp/sqlrelay-binary-distribution-1.9.2/ubuntu2004x64/sqlrelay_1.9.2-1_amd64.deb
-          sudo dpkg -i tmp/sqlrelay-binary-distribution-1.9.2/ubuntu2004x64/sqlrelay-c++_1.9.2-1_amd64.deb
-          sudo dpkg -i tmp/sqlrelay-binary-distribution-1.9.2/ubuntu2004x64/sqlrelay-c++-dev_1.9.2-1_amd64.deb
       - name: Checkout repo
         uses: actions/checkout@v2
+      - name: install sqlrelay vendor dependencies
+        run |
+          bin/sqlrelay-vendor-pkgs.sh download
+          bin/sqlrelay-vendor-pkgs.sh apt-enable
+          bin/sqlrelay-vendor-pkgs.sh apt-install
       - name: Setup PHP
         uses: "shivammathur/setup-php@v2"
         with:
