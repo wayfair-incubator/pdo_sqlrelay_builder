@@ -58,7 +58,7 @@ jobs:
           -d memory_limit=-1
           run-tests.php -n
           -d extension_dir=modules
-          -d extension=pdo.so
+          -d extension=$(php -r 'echo PHP_EXTENSION_DIR;')/pdo.so
           -d extension=pdo_sqlrelay.so
           --show-diff
           tests
