@@ -10,7 +10,7 @@ on:
 
 jobs:
   ubuntu:
-    name: Test on Ubuntu
+    name: Test in PHP version
     runs-on: ubuntu-latest
 
     strategy:
@@ -45,6 +45,8 @@ jobs:
         run: CFLAGS="-Wall" ./configure
       - name: Build
         run: make all
+      - name: PHP Info
+        run: php -info
       - name: Run tests
         run: >-
           REPORT_EXIT_STATUS=1
