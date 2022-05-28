@@ -38,9 +38,6 @@ jobs:
           tar --file=tmp/sqlrelay-binary-distribution-1.9.2.tar.gz \
               --directory=tmp \
               --extract --gzip
-
-nodejs-sqlrelay-debuginfo-1.9.2-1.el8.x86_64.rpm
-
           sudo yum -y localinstall tmp/sqlrelay-binary-distribution-1.9.2/ubuntu2004x64/rudiments-1.4.2-1.el8.x86_64.rpm
           sudo yum -y localinstall tmp/sqlrelay-binary-distribution-1.9.2/ubuntu2004x64/rudiments-devel-1.4.2-1.el8.x86_64.rpm
           sudo yum -y localinstall tmp/sqlrelay-binary-distribution-1.9.2/ubuntu2004x64/sqlrelay-c++-1.9.2-1.el8.x86_64.rpm
