@@ -8,4 +8,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.8.1] - 2022-05-26
 
 - Add source code from Firstworks current main branch and tests and cleanup md files.
-

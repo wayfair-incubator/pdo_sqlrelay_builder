@@ -21,6 +21,17 @@ software lifecycle management practices indicate.
 This project may not ever have releases or provide anything other than artifacts
 of testing.
 
+### File Catalog
+
+| Directory | Filename   | Provenance | Description                             |
+|-----------|------------|------------|-----------------------------------------|
+| /         | config.m4  | Wayfair    | The input to the phpize command         |
+| /         | \*         | Wayfair    | README etc                              |
+| /src      | \*         | Firstworks | from SQLRelay src/api/phppdo            |
+| /tests    | \*         | Wayfair    | phpt files containing sql               |
+| /.github  | \*         | Wayfair    | Workflows and templates                 |
+| /bin      | \*         | Wayfair    | Scripts to help build and test          |
+
 ## Getting Started
 
 In a suitable PHP development environment, with prequisite software installed,
@@ -39,8 +50,8 @@ will have calls to sed to do this editing.
 
 These all refer to prebuild binaries, e.g. RPM, APT, from customary sources.
 
-1. php-devel possibly from https://blog.remirepo.net/ or provided by your OS distro.
-2. rudiments-devel from https://www.firstworks.com/opensource.html
+1. php-devel possibly from [blog.remirepo.net](https://blog.remirepo.net/) or provided by your OS distro.
+2. rudiments-devel from [firstworks.com/opensource](https://www.firstworks.com/opensource.html)
 3. sqlrelay-c++-devel as above.
 4. php-debuginfo (strongly suggested)
 5. sqlrelay-debuginfo (strongly suggested)
@@ -54,7 +65,7 @@ phpize --clean; phpize; ./configure; make clean; make;
 
 ## Usage
 
-See https://www.firstworks.com/opensource.html
+See [firstworks.com/opensource](https://www.firstworks.com/opensource.html)
 
 ## Roadmap
 
