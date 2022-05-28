@@ -1,0 +1,64 @@
+# -*- mode:text; indent-tabs-mode: nil; -*-
+name: CI
+
+on:
+  push:
+    branches: [ g* ]
+  pull_request:
+    branches: [ g* ]
+  workflow_dispatch:
+
+jobs:
+  ubuntu:
+    name: Test in PHP version
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version:
+          - "7.4"
+          - "8.1"
+
+    steps:
+      - name: Install dependencies
+        run: |
+          lsb_release -a
+          sudo apt-get update
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: install sqlrelay vendor dependencies
+        run: |
+          ls -l bin/sqlrelay-vendor-pkgs.sh
+          bash bin/sqlrelay-vendor-pkgs.sh download
+          bash bin/sqlrelay-vendor-pkgs.sh apt-enable
+          bash bin/sqlrelay-vendor-pkgs.sh apt-install
+      - name: Setup PHP
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "${{ matrix.php-version }}"
+          coverage: "none"
+          tools: "phpize, php-config"
+      - name: Generate build files
+        run: phpize
+      - name: Configure build
+        run: CFLAGS="-Wall" ./configure
+      - name: Build
+        run: make all
+      - name: PHP Info
+        run: php -info
+      - name: Run tests
+        run: >-
+          REPORT_EXIT_STATUS=1
+          NO_INTERACTION=1
+          TEST_PHP_EXECUTABLE=$(which php)
+          php -n
+          -d open_basedir=
+          -d output_buffering=0
+          -d memory_limit=-1
+          run-tests.php -n
+          -d extension_dir=modules
+          -d extension=$(php -r 'echo PHP_EXTENSION_DIR;')/pdo.so
+          -d extension=pdo_sqlrelay.so
+          --show-diff
+          tests
