@@ -24,6 +24,23 @@ jobs:
         run: |
           lsb_release -a
           sudo apt-get update
+          mkdir -p tmp
+          curl --silent --show-error \
+          --write-out "\n%{http_code} %{content_type} %{time_total} %{size_download} %{size_upload} %{url_effective}\n" \
+          --compressed \
+          --dump-header "tmp/sqlrelay-binary-distribution-1.9.2.hdr.txt" \
+          --output "tmp/sqlrelay-binary-distribution-1.9.2.tar.gz" \
+          --get \
+          --location \
+          --url "https://downloads.sourceforge.net/project/sqlrelay/sqlrelay/1.9.2/sqlrelay-binary-distribution-1.9.2.tar.gz" \
+          --form-string "r=https://sqlrelay.sourceforge.net/download2.html" \
+          --form-string ts=$(date +%s) \
+          --form-string use_mirror=superb-dca2
+          gzip -t -v tmp/sqlrelay-binary-distribution-1.9.2.tar.gz
+          tar --file=tmp/sqlrelay-binary-distribution-1.9.2.tar.gz \
+              --directory=tmp \
+              --extract --gzip
+          find tmp
       - name: Checkout repo
         uses: actions/checkout@v2
       - name: Setup PHP
