@@ -1,3 +1,4 @@
+# -*- mode:text; indent-tabs-mode: nil; -*-
 name: CI
 
 on:
@@ -28,9 +29,10 @@ jobs:
         uses: actions/checkout@v2
       - name: install sqlrelay vendor dependencies
         run: |
-          bin/sqlrelay-vendor-pkgs.sh download
-          bin/sqlrelay-vendor-pkgs.sh apt-enable
-          bin/sqlrelay-vendor-pkgs.sh apt-install
+          ls -l bin/sqlrelay-vendor-pkgs.sh
+          bash bin/sqlrelay-vendor-pkgs.sh download
+          bash bin/sqlrelay-vendor-pkgs.sh apt-enable
+          bash bin/sqlrelay-vendor-pkgs.sh apt-install
       - name: Setup PHP
         uses: "shivammathur/setup-php@v2"
         with:
