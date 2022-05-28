@@ -27,7 +27,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v2
       - name: install sqlrelay vendor dependencies
-        run |
+        run: |
           bin/sqlrelay-vendor-pkgs.sh download
           bin/sqlrelay-vendor-pkgs.sh apt-enable
           bin/sqlrelay-vendor-pkgs.sh apt-install
