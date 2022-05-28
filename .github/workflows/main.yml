@@ -40,7 +40,12 @@ jobs:
           tar --file=tmp/sqlrelay-binary-distribution-1.9.2.tar.gz \
               --directory=tmp \
               --extract --gzip
-          find tmp
+          sudo dpkg -i tmp/sqlrelay-binary-distribution-1.9.2/ubuntu2004x64/rudiments_1.4.2-1_amd64.deb
+          sudo dpkg -i tmp/sqlrelay-binary-distribution-1.9.2/ubuntu2004x64/rudiments-dev_1.4.2-1_amd64.deb
+          sudo dpkg -i tmp/sqlrelay-binary-distribution-1.9.2/ubuntu2004x64/sqlrelay-common_1.9.2-1_amd64.deb
+          sudo dpkg -i tmp/sqlrelay-binary-distribution-1.9.2/ubuntu2004x64/sqlrelay-common-dev_1.9.2-1_amd64.deb
+          sudo dpkg -i tmp/sqlrelay-binary-distribution-1.9.2/ubuntu2004x64/sqlrelay-c++_1.9.2-1_amd64.deb
+          sudo dpkg -i tmp/sqlrelay-binary-distribution-1.9.2/ubuntu2004x64/sqlrelay-c++-dev_1.9.2-1_amd64.deb
       - name: Checkout repo
         uses: actions/checkout@v2
       - name: Setup PHP
