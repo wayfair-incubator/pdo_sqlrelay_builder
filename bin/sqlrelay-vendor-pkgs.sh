@@ -101,8 +101,11 @@ elif [ "$operation" = "show-env" ]; then
     id
     pwd
     ps -p 1 -o pid,ppid,comm:32,etimes,wchan
-    ps -u $LOGNAME --forest -o pid,ppid,comm:32,etimes,wchan
+    ps -u $(id --user) --forest -o pid,ppid,comm:32,etimes,wchan
     df -h .
+    if [ "$(which docker)" != "" ]; then
+	docker version
+    fi
 elif [ "$operation" = "apt-enable" ]; then
     lsb_release -idrc
     status=$?
