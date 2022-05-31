@@ -77,7 +77,7 @@ Contributions are what make the open source community such an amazing place to l
 
 ## License
 
-Wayfair provided files distributed under the `BSD 2-Clause "Simplified"` License.
+Wayfair provided files distributed under the `MIT` License.
 See `LICENSE` for more information. other files as indicated by the upstream sources.
 
 ## Contact
