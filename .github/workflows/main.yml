@@ -33,7 +33,7 @@ jobs:
         uses: actions/checkout@v2
       - name: install sqlrelay vendor dependencies
         run: |
-          ls -l bin/sqlrelay-vendor-pkgs.sh
+          bash bin/sqlrelay-vendor-pkgs.sh show-env
           bash bin/sqlrelay-vendor-pkgs.sh download
           bash bin/sqlrelay-vendor-pkgs.sh apt-enable
           bash bin/sqlrelay-vendor-pkgs.sh apt-install
@@ -51,8 +51,15 @@ jobs:
         run: make all
       - name: PHP Info
         run: php -info
+      - name: setup log dirs
+        run: mkdir artifacts artifacts/client-log artifacts/test artifacts/exe artifacts/build
+      - name: collect package info
+        run: |
+         lsb_release -a > artifacts/build/environment.txt
+         apt list --installed "sqlrelay*" "rudiments*" > artifacts/build/installed.txt
       - name: Run tests
         run: >-
+          SQLR_CLIENT_DEBUG_PREFIX=artifacts/client-log/
           REPORT_EXIT_STATUS=1
           NO_INTERACTION=1
           TEST_PHP_EXECUTABLE=$(which php)
@@ -64,5 +71,15 @@ jobs:
           -d extension_dir=modules
           -d extension=$(php -r 'echo PHP_EXTENSION_DIR;')/pdo.so
           -d extension=pdo_sqlrelay.so
-          --show-diff
           tests
+      - name: collect artifacts
+        if: always()
+        run: |
+         cp tests/*.diff artifacts/test
+         cp modules/pdo_sqlrelay.so artifacts/exe
+      - name: publish artifacts
+        if: always()
+        uses: actions/upload-artifact@v2
+        with: 
+          name: artifacts-of-test-${{ matrix.php-version }}
+          path: artifacts
