@@ -79,6 +79,15 @@ sqlrelay_unpack() {
     return $status
 }
 
+# The client packages are needed to build and test the pdo_sqlrelay.so
+client_library_packages="sqlrelay-c++ rudiments sqlrelay-common"
+client_dev_packages="sqlrelay-c++-dev rudiments-dev"
+# The server packages are needed to start a sqlrelay server in the same machine.
+# this is a nice way to test because it makes it makes the server logs available
+# for comparison with the client logs.
+server_packages="sqlrelay sqlrelay-odbc sqlrelay-clients"
+all_packages="$client_library_packages $client_dev_packages $server_packages"
+
 if [ "$operation" = "download" ]; then
     sourceforge_download "sqlrelay" ${sqlrelay_version} sqlrelay-binary-distribution
     status=$?
@@ -93,6 +102,19 @@ if [ "$operation" = "download" ]; then
 	exit $status
     fi
     exit 0
+elif [ "$operation" = "show-env" ]; then
+    uname -a
+    lsb_release -a
+    hostname --fqdn
+    hostname --all-ip-addresses
+    id
+    pwd
+    ps -p 1 -o pid,ppid,comm:32,etimes,wchan
+    ps -u $(id --user) --forest -o pid,ppid,comm:32,etimes,wchan
+    df -h .
+    if [ "$(which docker)" != "" ]; then
+	docker version
+    fi
 elif [ "$operation" = "apt-enable" ]; then
     lsb_release -idrc
     status=$?
@@ -134,9 +156,12 @@ elif [ "$operation" = "apt-enable" ]; then
     fi
     exit 0
 elif [ "$operation" = "apt-install" ]; then
-    sudo apt-get -y --allow-unauthenticated install sqlrelay-c++-dev rudiments-dev
+    sudo apt-get -y --allow-unauthenticated install $all_packages
+elif [ "$operation" = "yum-install" ]; then
+    sudo yum install --exclude 'lgto*' -y $(echo -n $all_packages | sed 's/-dev/-devel/g')
 elif [ "$operation" = "apt-remove" ]; then
-    sudo apt -y remove sqlrelay-c++ rudiments
+    # remove just rudiments and everything goes with it.
+    sudo apt -y remove rudiments
 else
     echo "unknown operation: $operation, try download or apt-enable"
     exit 1
