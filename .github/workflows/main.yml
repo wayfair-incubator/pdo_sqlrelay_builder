@@ -52,14 +52,32 @@ jobs:
       - name: PHP Info
         run: php -info
       - name: setup log dirs
-        run: mkdir artifacts artifacts/client-log artifacts/test artifacts/exe artifacts/build
+        run: >-
+          mkdir artifacts artifacts/client-log artifacts/test
+          artifacts/exe artifacts/build artifacts/server-log
       - name: collect package info
         run: |
          lsb_release -a > artifacts/build/environment.txt
+         echo "" >> artifacts/build/environment.txt
+         php --version >> artifacts/build/environment.txt
          apt list --installed "sqlrelay*" "rudiments*" > artifacts/build/installed.txt
+      - name: start Microsoft SQL Server
+        run: bash bin/mssql.sh start
+      - name: sleep before testing mssql
+        # We could do a loop until the test succeeds
+        run: sleep 15
+      - name: test mssql
+        run: bash bin/mssql.sh test
+      - name: config sqlrelay
+        run: bash bin/sqlrelay.sh config
+      - name: start sqlrelay
+        run: bash bin/sqlrelay.sh start
+      - name: test sqlrelay
+        run: bash bin/sqlrelay.sh test
       - name: Run tests
         run: >-
           SQLR_CLIENT_DEBUG_PREFIX=artifacts/client-log/
+          RUN_FAILING_TESTS=1
           REPORT_EXIT_STATUS=1
           NO_INTERACTION=1
           TEST_PHP_EXECUTABLE=$(which php)
@@ -72,11 +90,19 @@ jobs:
           -d extension=$(php -r 'echo PHP_EXTENSION_DIR;')/pdo.so
           -d extension=pdo_sqlrelay.so
           tests
+      - name: stop sqlrelay
+        if: always()
+        run: bash bin/sqlrelay.sh stop
+      - name: stop Microsoft SQL Server
+        if: always()
+        run: bash bin/mssql.sh stop
       - name: collect artifacts
         if: always()
         run: |
-         cp tests/*.diff artifacts/test
-         cp modules/pdo_sqlrelay.so artifacts/exe
+         bash bin/careful-mv.sh tests/*.diff artifacts/test
+         bash bin/careful-mv.sh modules/pdo_sqlrelay.so artifacts/exe
+         bash bin/careful-mv.sh /var/log/sqlrelay/debug/* artifacts/server-log
+         bash bin/careful-mv.sh /var/log/sqlrelay/odbc/* artifacts/server-log
       - name: publish artifacts
         if: always()
         uses: actions/upload-artifact@v2
