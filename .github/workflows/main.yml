@@ -57,6 +57,13 @@ jobs:
         run: |
          lsb_release -a > artifacts/build/environment.txt
          apt list --installed "sqlrelay*" "rudiments*" > artifacts/build/installed.txt
+      - name: start Microsoft SQL Server
+        run: bash bin/mssql.sh start
+      - name: sleep before testing mssql
+        # We could do a loop until the test succeeds
+        run: sleep 15
+      - name: test mssql
+        run: bash bin/mssql.sh test
       - name: Run tests
         run: >-
           SQLR_CLIENT_DEBUG_PREFIX=artifacts/client-log/
@@ -72,6 +79,9 @@ jobs:
           -d extension=$(php -r 'echo PHP_EXTENSION_DIR;')/pdo.so
           -d extension=pdo_sqlrelay.so
           tests
+      - name: stop Microsoft SQL Server
+        if: always()
+        run: bash bin/mssql.sh stop
       - name: collect artifacts
         if: always()
         run: |
