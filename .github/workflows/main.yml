@@ -52,7 +52,9 @@ jobs:
       - name: PHP Info
         run: php -info
       - name: setup log dirs
-        run: mkdir artifacts artifacts/client-log artifacts/test artifacts/exe artifacts/build
+        run: >-
+          mkdir artifacts artifacts/client-log artifacts/test
+          artifacts/exe artifacts/build artifacts/server-log
       - name: collect package info
         run: |
          lsb_release -a > artifacts/build/environment.txt
@@ -96,6 +98,8 @@ jobs:
         run: |
          bash bin/careful-mv.sh tests/*.diff artifacts/test
          bash bin/careful-mv.sh modules/pdo_sqlrelay.so artifacts/exe
+         bash bin/careful-mv.sh /var/log/sqlrelay/debug/* artifacts/server-log
+         bash bin/careful-mv.sh /var/log/sqlrelay/odbc/* artifacts/server-log
       - name: publish artifacts
         if: always()
         uses: actions/upload-artifact@v2
