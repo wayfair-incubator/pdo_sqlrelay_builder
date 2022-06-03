@@ -58,6 +58,8 @@ jobs:
       - name: collect package info
         run: |
          lsb_release -a > artifacts/build/environment.txt
+         echo "" >> artifacts/build/environment.txt
+         php --version >> artifacts/build/environment.txt
          apt list --installed "sqlrelay*" "rudiments*" > artifacts/build/installed.txt
       - name: start Microsoft SQL Server
         run: bash bin/mssql.sh start
