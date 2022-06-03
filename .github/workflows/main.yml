@@ -105,7 +105,7 @@ jobs:
          bash bin/careful-mv.sh /var/log/sqlrelay/odbc/* artifacts/server-log
       - name: publish artifacts
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with: 
           name: artifacts-of-test-${{ matrix.php-version }}
           path: artifacts
