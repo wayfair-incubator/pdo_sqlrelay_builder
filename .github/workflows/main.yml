@@ -94,8 +94,8 @@ jobs:
       - name: collect artifacts
         if: always()
         run: |
-         cp tests/*.diff artifacts/test
-         cp modules/pdo_sqlrelay.so artifacts/exe
+         bash bin/careful-mv.sh tests/*.diff artifacts/test
+         bash bin/careful-mv.sh modules/pdo_sqlrelay.so artifacts/exe
       - name: publish artifacts
         if: always()
         uses: actions/upload-artifact@v2
