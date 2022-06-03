@@ -75,6 +75,7 @@ jobs:
       - name: Run tests
         run: >-
           SQLR_CLIENT_DEBUG_PREFIX=artifacts/client-log/
+          RUN_FAILING_TESTS=1
           REPORT_EXIT_STATUS=1
           NO_INTERACTION=1
           TEST_PHP_EXECUTABLE=$(which php)
