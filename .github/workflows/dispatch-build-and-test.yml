@@ -13,6 +13,7 @@ on:
   workflow_dispatch:
     inputs:
       php_version:
+        required: true
         description: 'The PHP version '
         default: '8.1'
         type: choice
@@ -21,6 +22,7 @@ on:
         - '8.0'
         - '8.1
       compiler_optimization_level:
+        required: true
         description: 'Setting of the gcc -O flag'
         default: '2'
         type: choice
@@ -29,6 +31,7 @@ on:
         - '1'
         - '0'
       valgrind_tool:
+        required: true
         description: 'What valgrind tool to use'
         default: ''
         type: choice
