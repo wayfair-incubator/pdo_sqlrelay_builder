@@ -1,10 +1,9 @@
 --TEST--
 pdo_test.php --test some transaction features.
 --SKIPIF--
-<?php if(
-(!extension_loaded('pdo_sqlrelay')) ||
-( ((PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION) <= 8.0) && empty(getenv("RUN_FAILING_TESTS")) )
-) die('skip '); ?>
+<?php if(!extension_loaded('pdo_sqlrelay')) die('skip ');
+      if(empty(getenv("RUN_FAILING_TESTS"))) die('skip ');
+?>
 --FILE--
 <?php
 
