@@ -12,8 +12,7 @@ name: dispatch-build-and-test
 on:
   workflow_dispatch:
     inputs:
-      php_version:
-        required: true
+      phpversion:
         description: 'The PHP version '
         default: '8.1'
         type: choice
@@ -21,8 +20,7 @@ on:
         - '7.4'
         - '8.0'
         - '8.1
-      compiler_optimization_level:
-        required: true
+      compileroptimizationlevel:
         description: 'Setting of the gcc -O flag'
         default: '2'
         type: choice
@@ -30,8 +28,7 @@ on:
         - '2'
         - '1'
         - '0'
-      valgrind_tool:
-        required: true
+      valgrindtool:
         description: 'What valgrind tool to use'
         default: ''
         type: choice
@@ -43,6 +40,6 @@ jobs:
   call-build-and-test:
     uses: ./.github/workflows/build-and-test.yml
     with:
-      php-version: '8.1'
-      compiler-optimization-level: 2
-      valgrind-tool: 'memcheck'
+      php-version: ${{ inputs.phpversion }}
+      compiler-optimization-level: ${{ inputs.compileroptimizationlevel }}
+      valgrind-tool: ${{ inputs.valgrindtool }}
