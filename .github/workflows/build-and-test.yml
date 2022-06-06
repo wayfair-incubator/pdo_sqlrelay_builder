@@ -28,6 +28,9 @@ jobs:
           lsb_release -a
           sudo apt-get update
           sudo apt install valgrind
+      - name: Check basic dependencies
+        run: |
+          valgrind --version
       - name: Checkout repo
         uses: actions/checkout@v2
       - name: install sqlrelay vendor dependencies
