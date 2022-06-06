@@ -11,24 +11,24 @@ on:
         default: '8.1'
         type: choice
         options:
-          - '7.4'
-          - '8.0'
-          - '8.1
+        - '7.4'
+        - '8.0'
+        - '8.1
       compiler-optimization-level:
         description: 'Setting of the gcc -O flag'
         default: '2'
         type: choice
         options:
-          - '2'
-          - '1'
-          - '0'
+        - '2'
+        - '1'
+        - '0'
       valgrind-tool:
         description: 'What valgrind tool to use'
         default: ''
         type: choice
         options:
-          - ''
-          - 'memcheck'
+        - ''
+        - 'memcheck'
 jobs:
   call-build-and-test:
     uses: ./.github/workflows/build-and-test.yml
