@@ -2,7 +2,8 @@
 
 # It is useful to strongly type inputs to a workflow_dispatch,
 # giving specific options whenever possible, to minimize
-# operator errors.
+# operator errors. This first cut, no inputs at all.
+
 
 ---
 
@@ -15,6 +16,6 @@ jobs:
   call-build-and-test:
     uses: ./.github/workflows/build-and-test.yml
     with:
-      php-version: ${{ inputs.php_version }}
-      compiler-optimization-evel: ${{ inputs.compiler_optimization_level }}
-      valgrind-tool: ${{ inputs.valgrind_tool }}
+      php-version: '8.1'
+      compiler-optimization-level: 2
+      valgrind-tool: 'memcheck'
