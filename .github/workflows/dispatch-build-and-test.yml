@@ -1,0 +1,21 @@
+# -*- mode:yaml; indent-tabs-mode: nil; -*-
+
+# It is useful to strongly type inputs to a workflow_dispatch,
+# giving specific options whenever possible, to minimize
+# operator errors. This first cut, no inputs at all.
+
+
+---
+
+name: dispatch-build-and-test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  call-build-and-test:
+    uses: ./.github/workflows/build-and-test.yml
+    with:
+      php-version: '8.1'
+      compiler-optimization-level: 2
+      valgrind-tool: 'memcheck'
