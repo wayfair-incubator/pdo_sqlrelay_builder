@@ -1,12 +1,17 @@
 # -*- mode:yaml; indent-tabs-mode: nil; -*-
+
+# It is useful to strongly type inputs to a workflow_dispatch,
+# giving specific options whenever possible, to minimize
+# operator errors.
+
 ---
 
 name: dispatch-build-and-test
+
 on:
   workflow_dispatch:
-    # Strongly type these inputs to reduce operator error
     inputs:
-      php-version:
+      php_version:
         description: 'The PHP version '
         default: '8.1'
         type: choice
@@ -14,7 +19,7 @@ on:
         - '7.4'
         - '8.0'
         - '8.1
-      compiler-optimization-level:
+      compiler_optimization_level:
         description: 'Setting of the gcc -O flag'
         default: '2'
         type: choice
@@ -22,17 +27,18 @@ on:
         - '2'
         - '1'
         - '0'
-      valgrind-tool:
+      valgrind_tool:
         description: 'What valgrind tool to use'
         default: ''
         type: choice
         options:
         - ''
         - 'memcheck'
+
 jobs:
   call-build-and-test:
     uses: ./.github/workflows/build-and-test.yml
     with:
-      php-version: ${{ inputs.php-version }}
-      compiler-optimization-evel: ${{ inputs.compiler-optimization-level }}
-      valgrind-tool: ${{ inputs.compiler-optimization-level }}
+      php-version: ${{ inputs.php_version }}
+      compiler-optimization-evel: ${{ inputs.compiler_optimization_level }}
+      valgrind-tool: ${{ inputs.valgrind_tool }}
