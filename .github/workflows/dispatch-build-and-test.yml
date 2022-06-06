@@ -1,7 +1,7 @@
 # -*- mode:yaml; indent-tabs-mode: nil; -*-
+---
 
 name: dispatch-build-and-test
-
 on:
   workflow_dispatch:
     # Strongly type these inputs to reduce operator error

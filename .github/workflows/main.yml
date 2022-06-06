@@ -1,4 +1,5 @@
 # -*- mode:yaml; indent-tabs-mode: nil; -*-
+---
 name: CI
 
 on:

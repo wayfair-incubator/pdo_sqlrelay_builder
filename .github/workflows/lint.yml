@@ -1,3 +1,4 @@
+---
 name: lint
 
 on: # Rebuild any PRs and main branch changes
