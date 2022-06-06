@@ -10,30 +10,6 @@ name: dispatch-build-and-test
 
 on:
   workflow_dispatch:
-    inputs:
-      php_version:
-        description: 'The PHP version '
-        default: '8.1'
-        type: choice
-        options:
-        - '7.4'
-        - '8.0'
-        - '8.1
-      compiler_optimization_level:
-        description: 'Setting of the gcc -O flag'
-        default: '2'
-        type: choice
-        options:
-        - '2'
-        - '1'
-        - '0'
-      valgrind_tool:
-        description: 'What valgrind tool to use'
-        default: ''
-        type: choice
-        options:
-        - ''
-        - 'memcheck'
 
 jobs:
   call-build-and-test:
