@@ -87,7 +87,7 @@ jobs:
           -d output_buffering=0
           -d memory_limit=-1
           run-tests.php -n
-          ${{ inputs.valgrind-tool <> '' && format('-M {0}', inputs.valgrind-tool) || '' }}
+          ${{ inputs.valgrind-tool != '' && format('-M {0}', inputs.valgrind-tool) || '' }}
           -d extension_dir=modules
           -d extension=$(php -r 'echo PHP_EXTENSION_DIR;')/pdo.so
           -d extension=pdo_sqlrelay.so
