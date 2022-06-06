@@ -1,29 +1,26 @@
 # -*- mode:yaml; indent-tabs-mode: nil; -*-
-name: CI
 
+name: build-and-test
 on:
-  push:
-    branches:
-      - 'main'
-      - 'g*'
-  pull_request:
-      branches:
-      - 'main'
-      - 'g*'
-  workflow_dispatch:
-
+  workflow_call:
+    # No attempt to enforce strong data types.
+    inputs:
+      php-version:
+        description: 'The php version under which to test'
+        type: string
+        default: '8.1'
+      compiler-optimization-level:
+        description: 'setting of the -O flag'
+        type: string
+        default: '2'
+      valgrind-tool:
+        description: 'tool to pass to -M e.g. memcheck'
+        type: string
+        default: ''
 jobs:
-  ubuntu:
-    name: Test in PHP version
+  build-and-test-job:
+    name: Test in PHP version ${{ inputs.php-version }}
     runs-on: ubuntu-latest
-
-    strategy:
-      fail-fast: false
-      matrix:
-        php-version:
-          - "7.4"
-          - "8.1"
-
     steps:
       - name: Install dependencies
         run: |
@@ -40,13 +37,16 @@ jobs:
       - name: Setup PHP
         uses: "shivammathur/setup-php@v2"
         with:
-          php-version: "${{ matrix.php-version }}"
+          php-version: "${{ inputs.php-version }}"
           coverage: "none"
           tools: "phpize, php-config"
       - name: Generate build files
         run: phpize
       - name: Configure build
-        run: CFLAGS="-Wall" ./configure
+        # Note: When passed to make use CXXFLAGS, but configure looks at CFLAGS
+        run: >-
+          CFLAGS="-g -Wall -fstack-protector-strong -O${{ inputs.compiler-optimization-level}}"
+          ./configure
       - name: Build
         run: make all
       - name: PHP Info
@@ -86,6 +86,7 @@ jobs:
           -d output_buffering=0
           -d memory_limit=-1
           run-tests.php -n
+          ${{ inputs.valgrind-tool <> '' && format('-M {0}', inputs.valgrind-tool) || '' }}
           -d extension_dir=modules
           -d extension=$(php -r 'echo PHP_EXTENSION_DIR;')/pdo.so
           -d extension=pdo_sqlrelay.so
@@ -107,5 +108,5 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v3
         with: 
-          name: artifacts-of-test-${{ matrix.php-version }}
+          name: artifacts-of-test-${{ inputs.php-version }}
           path: artifacts
