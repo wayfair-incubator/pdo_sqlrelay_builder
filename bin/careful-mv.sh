@@ -21,7 +21,7 @@ eval "destination_directory=$arg"
 echo "Going to move $m files to $destination_directory/" 1>&2
 
 if [ ! -d "$destination_directory/" ]; then
-    echo "destination_directory is not a directory" 1>&2
+    echo "[$destination_directory] is not a directory" 1>&2
     exit 1
 fi
 
