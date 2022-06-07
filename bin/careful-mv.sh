@@ -4,6 +4,8 @@ total_file_count=0
 total_file_size=0
 total_fail_count=0
 
+echo "careful-mv arguments: $*" 1>&2
+
 n="$#"
 
 if [ "$n" -lt 2 ]; then
