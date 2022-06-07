@@ -17,7 +17,7 @@ fi
 # So instead we use eval.
 
 m=$(($n - 1))
-arg="\$$n"
+arg="\${$n}"
 eval "destination_directory=$arg"
 
 echo "Going to move $m files to $destination_directory/" 1>&2
