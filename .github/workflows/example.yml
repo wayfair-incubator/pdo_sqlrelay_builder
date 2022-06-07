@@ -13,6 +13,12 @@ on:
         default: 'warning'
       tags:
         description: 'Test scenario tags'
+      toggle:
+        type: choice
+        options:
+          - 'memcheck'
+          - ''
+        default: ''
 
 jobs:
   printInputs:
@@ -21,3 +27,5 @@ jobs:
       - run: |
           echo "Log level: ${{ github.event.inputs.logLevel }}"
           echo "Tags: ${{ github.event.inputs.tags }}"
+          echo "Toggle: ${{ github.event.inputs.toggle }}"
+
