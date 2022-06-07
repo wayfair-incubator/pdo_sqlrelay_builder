@@ -13,28 +13,17 @@ on:
   workflow_dispatch:
     inputs:
       phpversion:
-        description: 'The PHP version '
+        description: 'what php version to test against'
+        required: true
         default: '8.1'
-        type: choice
-        options:
-        - '7.4'
-        - '8.0'
-        - '8.1
       compileroptimizationlevel:
-        description: 'Setting of the gcc -O flag'
+        description: 'The -O flag number'
+        required: true
         default: '2'
-        type: choice
-        options:
-        - '2'
-        - '1'
-        - '0'
       valgrindtool:
-        description: 'What valgrind tool to use'
+        description: 'If not blank, the -M valgrind too argument, e.g. memcheck'
+        required: true
         default: ''
-        type: choice
-        options:
-        - ''
-        - 'memcheck'
 
 jobs:
   call-build-and-test:
