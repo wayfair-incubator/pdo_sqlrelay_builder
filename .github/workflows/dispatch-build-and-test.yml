@@ -22,7 +22,7 @@ on:
         default: '2'
       valgrindtool:
         description: 'If not blank, the -M valgrind too argument, e.g. memcheck'
-        required: true
+        required: false
         default: ''
 
 jobs:
