@@ -4,6 +4,8 @@ total_file_count=0
 total_file_size=0
 total_fail_count=0
 
+echo "careful-mv arguments: $*" 1>&2
+
 n="$#"
 
 if [ "$n" -lt 2 ]; then
@@ -15,13 +17,13 @@ fi
 # So instead we use eval.
 
 m=$(($n - 1))
-arg="\$$n"
+arg="\${$n}"
 eval "destination_directory=$arg"
 
 echo "Going to move $m files to $destination_directory/" 1>&2
 
 if [ ! -d "$destination_directory/" ]; then
-    echo "destination_directory is not a directory" 1>&2
+    echo "[$destination_directory] is not a directory" 1>&2
     exit 1
 fi
 
