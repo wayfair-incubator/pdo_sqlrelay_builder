@@ -7,7 +7,7 @@
 
 ---
 
-name: dispatch-build-and-test
+name: 'dispatch-build-and-test'
 
 on:
   workflow_dispatch:

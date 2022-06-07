@@ -8,7 +8,7 @@ on:
       - 'main'
       - 'g*'
   pull_request:
-      branches:
+    branches:
       - 'main'
       - 'g*'
 
