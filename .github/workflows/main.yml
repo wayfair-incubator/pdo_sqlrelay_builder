@@ -76,6 +76,8 @@ jobs:
         run: bash bin/sqlrelay.sh start
       - name: test sqlrelay
         run: bash bin/sqlrelay.sh test
+      - name: show sqlrelay 1
+        run: bash bin/sqlrelay.sh show
       - name: Run tests
         run: >-
           SQLR_CLIENT_DEBUG_PREFIX=artifacts/client-log/
@@ -92,6 +94,9 @@ jobs:
           -d extension=$(php -r 'echo PHP_EXTENSION_DIR;')/pdo.so
           -d extension=pdo_sqlrelay.so
           tests
+      - name: show sqlrelay 2
+        if: always()
+        run: bash bin/sqlrelay.sh show
       - name: stop sqlrelay
         if: always()
         run: bash bin/sqlrelay.sh stop
