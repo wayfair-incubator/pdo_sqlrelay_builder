@@ -91,6 +91,33 @@ EOF
     dt=$(($t1 - $t0))
     echo "status=$status in $dt seconds" 1>&2
 
+elif [ "$operation" = "setup" ]; then
+    mssql_container_id=$(get_mssql_container_id)
+    if [ "$?" != "0" ]; then exit 1; fi
+    read -r -d '' SQL <<EOF
+USE [master]
+CREATE LOGIN [TEST2] WITH PASSWORD=N'None-123#BAR', 
+DEFAULT_DATABASE=[master],
+CHECK_EXPIRATION=OFF, 
+CHECK_POLICY=OFF
+CREATE USER [TEST2] FOR LOGIN [TEST2]
+ALTER ROLE [db_datareader] ADD MEMBER [TEST2]
+EOF
+    login_timeout=120
+    t0=$(date +%s)
+    docker exec \
+	$mssql_container_id \
+	/opt/mssql-tools/bin/sqlcmd -S localhost -U "$sa_user" -P "$sa_pass" \
+	-s "|" \
+	-H "mssql.sh" \
+	-W \
+	-l $login_timeout \
+	-Q "$SQL" | sed -e 's/\( \)*/\1/g' -e 's/ |/|/g'
+    status=$?
+    t1=$(date +%s)
+    dt=$(($t1 - $t0))
+    echo "status=$status in $dt seconds" 1>&2
+
 elif [ "$operation" = "stop" ]; then
     mssql_container_id=$(get_mssql_container_id)
     if [ "$?" != "0" ]; then exit 1; fi

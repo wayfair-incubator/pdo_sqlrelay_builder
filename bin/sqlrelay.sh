@@ -30,7 +30,10 @@ ping;
 sqlrcmd gstat;
 sqlrcmd cstat;
 SELECT CAST(HOST_NAME() as VARCHAR(64)) as HOST_NAME,
-       CAST(APP_NAME() as VARCHAR(64)) as APP_NAME;
+       CAST(APP_NAME() as VARCHAR(64)) as APP_NAME,
+       USER_NAME() as CURRENT_USER_NAME,
+       SCHEMA_NAME() as SCHEMA_NAME,
+       DB_NAME() as DBNAME;
 EOF
     t0=$(date +%s)
     sqlrsh -id test -command "$sqlrsh_query"
