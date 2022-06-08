@@ -68,6 +68,8 @@ jobs:
         run: sleep 15
       - name: test mssql
         run: bash bin/mssql.sh test
+      - name: setup mssql
+        run: bash bin/mssql.sh setup
       - name: config sqlrelay
         run: bash bin/sqlrelay.sh config
       - name: start sqlrelay
