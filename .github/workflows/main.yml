@@ -30,7 +30,7 @@ jobs:
           lsb_release -a
           sudo apt-get update
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: install sqlrelay vendor dependencies
         run: |
           bash bin/sqlrelay-vendor-pkgs.sh show-env
@@ -112,7 +112,7 @@ jobs:
          bash bin/careful-mv.sh /var/log/sqlrelay/odbc/* artifacts/server-log
       - name: publish artifacts
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with: 
           name: artifacts-of-test-${{ matrix.php-version }}
           path: artifacts

@@ -32,7 +32,7 @@ jobs:
         run: |
           valgrind --version
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: install sqlrelay vendor dependencies
         run: |
           bash bin/sqlrelay-vendor-pkgs.sh show-env
@@ -117,7 +117,7 @@ jobs:
          bash bin/careful-mv.sh /var/log/sqlrelay/debug/* /var/log/sqlrelay/odbc/* artifacts/server-log
       - name: publish artifacts
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with: 
           name: artifacts-of-test-${{ inputs.php-version }}
           path: artifacts
